@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/spf13/cobra"
+	"github.com/stovermc/river-right-api/internal/trips/cmd/persistence/mongo"
+	persistence "github.com/stovermc/river-right-api/internal/trips/cmd/persistence/mongo"
+	"github.com/stovermc/river-right-api/internal/trips/frameworks/config"
 	"github.com/stovermc/river-right-api/internal/trips/frameworks/log"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var serverCmd = &cobra.Command{
@@ -37,25 +36,22 @@ func serverRun(cmd *cobra.Command, args []string) {
 
 	logger.Info("Yo yo we live!!")
 
-	uri := "mongodb+srv://stovermc:xH8QgPnSRu0FOs5A@cluster0.lzf8u.mongodb.net/river-right?retryWrites=true&w=majority"
-	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
-	if err != nil {
-		logger.Error(err, "error creating mongo client")
+	config := config.Init()
+
+	conn := persistence.Connection{
+		Datbase:  config.MongoDatabase,
+		Host:     config.MongoHost,
+		Username: config.MongoUsername,
+		Password: config.MongoPassword,
 	}
 
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-
-	err = client.Connect(ctx)
+	mongoClient, disconnect, err := mongo.NewClient(logger, conn)
 	if err != nil {
-		logger.Error(err, "error connecting to mongo")
-	}
-	defer client.Disconnect(ctx)
-
-	err = client.Ping(ctx, readpref.Primary())
-	if err != nil {
-		logger.Error(err, "mongo ping failed")
+		logger.Error(err)
+		os.Exit(1)
 	}
 
-	databases, err := client.ListDatabaseNames(ctx, bson.M{})
-	fmt.Println(databases)
+	defer disconnect()
+
+	fmt.Println(mongoClient.ListDatabases(context.Background(), bson.M{}))
 }
