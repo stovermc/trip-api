@@ -5,8 +5,6 @@ import (
 	"os"
 )
 
-// uri := "mongodb+srv://stovermc:xH8QgPnSRu0FOs5A@cluster0.lzf8u.mongodb.net/river-right?retryWrites=true&w=majority"
-
 type Config struct {
 	MongoDatabase string
 	MongoHost     string
