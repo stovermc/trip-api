@@ -1,6 +1,7 @@
 package main
 
-import "github.com/spf13/cobra/cobra/cmd"
+import "github.com/stovermc/river-right-api/internal/trips/cmd"
+
 
 func main() {
 	cmd.Execute()
