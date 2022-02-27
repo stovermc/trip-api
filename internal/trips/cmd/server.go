@@ -7,8 +7,7 @@ import (
 
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/spf13/cobra"
-	"github.com/stovermc/river-right-api/internal/trips/cmd/persistence/mongo"
-	persistence "github.com/stovermc/river-right-api/internal/trips/cmd/persistence/mongo"
+	"github.com/stovermc/river-right-api/internal/trips/frameworks/persistence/mongo"
 	"github.com/stovermc/river-right-api/internal/trips/frameworks/config"
 	"github.com/stovermc/river-right-api/internal/trips/frameworks/log"
 	"go.mongodb.org/mongo-driver/bson"
@@ -38,7 +37,7 @@ func serverRun(cmd *cobra.Command, args []string) {
 
 	config := config.Init()
 
-	conn := persistence.Connection{
+	conn := mongo.Connection{
 		Username: config.MongoUsername,
 		Password: config.MongoPassword,
 		Host:     config.MongoHost,
