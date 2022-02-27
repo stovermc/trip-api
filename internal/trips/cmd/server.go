@@ -39,10 +39,11 @@ func serverRun(cmd *cobra.Command, args []string) {
 	config := config.Init()
 
 	conn := persistence.Connection{
-		Datbase:  config.MongoDatabase,
-		Host:     config.MongoHost,
 		Username: config.MongoUsername,
 		Password: config.MongoPassword,
+		Host:     config.MongoHost,
+		Port:     config.MongoPort,
+		Datbase:  config.MongoDatabase,
 	}
 
 	mongoClient, disconnect, err := mongo.NewClient(logger, conn)
