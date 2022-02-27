@@ -50,8 +50,9 @@ func serverRun(cmd *cobra.Command, args []string) {
 		logger.Error(err)
 		os.Exit(1)
 	}
-
 	defer disconnect()
+
+
 
 	fmt.Println(mongoClient.ListDatabases(context.Background(), bson.M{}))
 }

@@ -7,6 +7,7 @@ require (
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
+	github.com/gorilla/mux v1.8.0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/spf13/cobra v0.0.3
