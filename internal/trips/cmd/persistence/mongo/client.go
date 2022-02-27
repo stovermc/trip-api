@@ -22,7 +22,7 @@ type Connection struct {
 }
 
 func (c *Connection) URI() string {
-  return fmt.Sprintf("mongodb+srv://%s:%s@%s/%s?retryWrites=true&w=majority", c.Username, c.Password, c.Host, c.Datbase)
+  return fmt.Sprintf("mongodb://%s:%s@%s:%s/%s", c.Username, c.Password, c.Host, c.Port, c.Datbase)
 }
 
 func NewClient(logger app.Logger, conn Connection) (*mongo.Client, Disconnect, error) {
