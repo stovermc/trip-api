@@ -11,7 +11,7 @@ type Dependencies struct {
 	TripRepository
 }
 
-type GenerateID func() (string, error)
+type GenerateID func() string
 
 type TripRepository interface {
 	Add(context.Context, domain.Trip) error

@@ -7,9 +7,13 @@ import (
 
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/spf13/cobra"
-	"github.com/stovermc/river-right-api/internal/trips/frameworks/persistence/mongo"
+	"github.com/stovermc/river-right-api/internal/trips/app"
 	"github.com/stovermc/river-right-api/internal/trips/frameworks/config"
+	"github.com/stovermc/river-right-api/internal/trips/frameworks/id"
 	"github.com/stovermc/river-right-api/internal/trips/frameworks/log"
+	inmemory "github.com/stovermc/river-right-api/internal/trips/frameworks/persistence/inMemory"
+	"github.com/stovermc/river-right-api/internal/trips/frameworks/persistence/mongo"
+	"github.com/stovermc/river-right-api/internal/trips/interfaces"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -52,7 +56,14 @@ func serverRun(cmd *cobra.Command, args []string) {
 	}
 	defer disconnect()
 
+	repository := inmemory.NewTripRepository()
 
+	d	:= &app.Dependencies{
+		GenerateID:     id.GenerateID,
+		TripRepository: repository,
+	}
+
+	interfaces.MakeHttpHandler(logger, d)
 
 	fmt.Println(mongoClient.ListDatabases(context.Background(), bson.M{}))
 }
