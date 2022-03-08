@@ -8,7 +8,7 @@ import (
 	"github.com/stovermc/river-right-api/internal/trips/domain"
 )
 
-type TripRepo struct {
+type TripRepository struct {
 	Trips map[string]domain.Trip
 	sync.Mutex
 }
@@ -16,12 +16,12 @@ type TripRepo struct {
 func NewTripRepository() app.TripRepository {
 	m := make(map[string]domain.Trip)
 
-	return &TripRepo{
+	return &TripRepository{
 		Trips: m,
 	}
 }
 
-func (tr *TripRepo) Add(ctx context.Context, t domain.Trip) error {
+func (tr *TripRepository) Add(ctx context.Context, t domain.Trip) error {
 	tr.Lock()
 	if _, ok := tr.Trips[t.ID()]; ok {
 		tr.Unlock()
@@ -34,7 +34,7 @@ func (tr *TripRepo) Add(ctx context.Context, t domain.Trip) error {
 	return nil
 }
 
-func (tr *TripRepo) Get(ctx context.Context, id string) (domain.Trip, error) {
+func (tr *TripRepository) Get(ctx context.Context, id string) (domain.Trip, error) {
 	tr.Lock()
 	t, ok := tr.Trips[id]
 	if !ok {
@@ -46,7 +46,7 @@ func (tr *TripRepo) Get(ctx context.Context, id string) (domain.Trip, error) {
 	return t, nil
 }
 
-func (tr *TripRepo) Save(ctx context.Context, t domain.Trip) error {
+func (tr *TripRepository) Save(ctx context.Context, t domain.Trip) error {
 	tr.Lock()
 	if _, ok := tr.Trips[t.ID()]; !ok {
 		tr.Unlock()

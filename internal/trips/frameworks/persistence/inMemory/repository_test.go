@@ -23,7 +23,7 @@ func Test_TripRepository_Add_WhenTripDoesNotExist(t *testing.T) {
 	err := tripRepo.Add(context.Background(), trip)
 	assert.Nil(err, "failed while saving trip")
 
-	inmemRepo, ok := tripRepo.(*inmemory.TripRepo)
+	inmemRepo, ok := tripRepo.(*inmemory.TripRepository)
 	assert.True(ok, "failed while type casting to inmemory.TripRepo")
 
 	persistedTrip, ok := inmemRepo.Trips[id]
@@ -89,7 +89,7 @@ func Test_TripRepository_Save_WhenTripAlreadyExists(t *testing.T) {
 	err = tripRepo.Save(context.Background(), updatedTrip)
 	assert.Nil(err, "failed while saving trip")
 
-	inmemRepo, ok := tripRepo.(*inmemory.TripRepo)
+	inmemRepo, ok := tripRepo.(*inmemory.TripRepository)
 	assert.True(ok, "failed while type casting to inmemory.TripRepo")
 
 	persistedTrip, ok := inmemRepo.Trips[id]
